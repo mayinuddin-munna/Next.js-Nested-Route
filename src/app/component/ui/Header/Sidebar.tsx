@@ -3,8 +3,21 @@ import logo from "./../../../../assets/logo/logo.png";
 import Image from "next/image";
 import Drawer from "./Drawer";
 
-const Sidebar = ({ isSidebarOpen, categories, isDrawerOpen, toggleDrawer }) => {
-  const [activeCategory, setActiveCategory] = useState(null);
+type Category = {
+  name: string;
+  navItems: { name: string; items: string[] }[];
+  images: string[];
+};
+
+interface SidebarProps {
+  isSidebarOpen: boolean;
+  categories: Category[];
+  isDrawerOpen: boolean;
+  toggleDrawer: () => void;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen, categories, isDrawerOpen, toggleDrawer }) => {
+  const [activeCategory, setActiveCategory] = useState<Category | null>(null);
 
   return (
     <div
@@ -16,13 +29,14 @@ const Sidebar = ({ isSidebarOpen, categories, isDrawerOpen, toggleDrawer }) => {
         <figure className="px-8">
           <Image src={logo} alt="logo" className="w-24 lg:w-28" />
         </figure>
-        <div className="flex flex-col space-y-4 items-starts mt-4">
+        <div className="flex flex-col space-y-4 items-start mt-4">
           {categories.map((category, index) => (
             <div
               key={index}
               className="text-gray-200 hover:text-white cursor-pointer transition duration-300"
               onClick={() => {
-                setActiveCategory(category), toggleDrawer();
+                setActiveCategory(category);
+                toggleDrawer();
               }}
             >
               <p className="px-8">{category.name}</p>

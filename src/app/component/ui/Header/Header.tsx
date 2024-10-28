@@ -1,12 +1,10 @@
 "use client";
 import React, { useState } from "react";
 import logo from "./../../../../assets/logo/logo.png";
-import { useSelector } from "react-redux";
 import {
   AiOutlineMenuUnfold,
   AiFillCloseSquare,
   AiOutlineShopping,
-  AiOutlineUser,
   AiOutlineSearch,
 } from "react-icons/ai";
 import Link from "next/link";
@@ -15,21 +13,20 @@ import Menu from "./Menu";
 import Sidebar from "./Sidebar";
 import { navCategories } from "./navItems";
 
-const Navbar = () => {
+type Category = {
+  name: string;
+  navItems: { name: string; items: string[] }[];
+  images: string[];
+};
+
+const Navbar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeCategory, setActiveCategory] = useState(null);
+  const [activeCategory, setActiveCategory] = useState<Category | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  //   const userInfo = useSelector((state) => state?.userSlice?.userInfo);
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
-  const toggleDrawer = () => {
-    setIsDrawerOpen(!isDrawerOpen);
-  };
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+  const toggleDrawer = () => setIsDrawerOpen(!isDrawerOpen);
 
   return (
     <nav className="w-full bg-black bg-opacity-40 backdrop-blur-xl fixed z-50">
@@ -39,9 +36,7 @@ const Navbar = () => {
       >
         <div className="flex items-center justify-start md:space-x-6 lg:space-x-20 pl-4">
           <Link href="/">
-            {!isSidebarOpen && (
-              <Image src={logo} alt="logo" className="w-24 lg:w-28 h-" />
-            )}
+            {!isSidebarOpen && <Image src={logo} alt="logo" className="w-24 lg:w-28" />}
           </Link>
           <div className="hidden md:flex md:space-x-2 lg:space-x-4">
             {navCategories.map((category, index) => (
@@ -49,7 +44,8 @@ const Navbar = () => {
                 key={index}
                 className="text-gray-100 hover:text-white hover:scale-105 cursor-pointer transition-all duration-300 border-b-2 border-transparent hover:border-white"
                 onMouseEnter={() => {
-                  setMenuOpen(true), setActiveCategory(category);
+                  setMenuOpen(true);
+                  setActiveCategory(category);
                 }}
               >
                 <p>{category.name}</p>
@@ -63,19 +59,6 @@ const Navbar = () => {
               <AiOutlineSearch size={24} />
             </div>
             <div className="cursor-pointer hover:text-white">
-              {/* {userInfo ? (
-                <Link href="/profile">
-                  <Image
-                    src={userInfo?.profilePicture}
-                    alt="profile"
-                    className="h-7 w-7 rounded-full object-cover"
-                  />
-                </Link>
-              ) : (
-                <Link href="/login">
-                  <AiOutlineUser size={24} />
-                </Link>
-              )} */}
               login
             </div>
             <div className="cursor-pointer hover:text-white">
@@ -84,16 +67,14 @@ const Navbar = () => {
           </div>
           <div>
             {!isSidebarOpen ? (
-              <button
-                onClick={() => toggleSidebar()}
-                className="md:hidden text-white cursor-pointer"
-              >
+              <button onClick={toggleSidebar} className="md:hidden text-white cursor-pointer">
                 <AiOutlineMenuUnfold size={24} />
               </button>
             ) : (
               <button
                 onClick={() => {
-                  toggleSidebar(), setIsDrawerOpen(false);
+                  toggleSidebar();
+                  setIsDrawerOpen(false);
                 }}
                 className="md:hidden text-white cursor-pointer"
               >
