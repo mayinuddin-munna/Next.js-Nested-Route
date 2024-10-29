@@ -46,7 +46,7 @@ const CartSidebar = () => {
       <div className="bg-red-500 h-full">
         <div className="flex justify-between items-center h-16 bg-black px-4">
           <p className="my-title-font text-md font-semibold">
-            <p> YOUR CART</p>
+            <span> YOUR CART</span>
             {/* Shopping Bag ({bagItems ? bagItems?.length : 0}) */}
           </p>
           <button
